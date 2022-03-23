@@ -25,14 +25,16 @@ int main()
     msleep(1000);
     slow_servo(1, 1100); // claw
  	// move to botguy
-    
+	// move to line
     move_until_black(calc_threshold());
  	move(400,1200);
     turnright(30);
    	move(600,1500);
+    
     move_until_black(calc_threshold());
     move(400,350);
     turnleft(130);
+    move(-200,300);
     //===========
     slow_servo(1, 2000); // open
    	slow_servo(2, 1800); // move middle up
@@ -40,7 +42,7 @@ int main()
     //===========
     forwarduntilbump(50);
     slow_servo(1,1100);
-   	move(-300,500);
+   	move(-100,1000);
 	
     msleep(1000);
     
@@ -50,21 +52,22 @@ int main()
     move_until_black(calc_threshold());
     move(250,1000);
     forwarduntilbump(100);
-   	move(-300,500);
+   	move(-300,1050); // set distance back
     turnleft(-50);
 	//calibrate
-    move(-250,200);
+    move(-250,50); // plsss callibrate minor turn
     create_drive_direct(100,0);
     msleep(400);
     create_drive_direct(0,0);
    	//grab
     slow_servo(0, 400);
-    slow_servo(2, 1200);
+    slow_servo(2, 1000);
     slow_servo(1, 2000);
-    create_drive_direct(0,100);
-    msleep(200);
-    create_drive_direct(0,0);
     pause();
+    
+    create_drive_direct(100,0); // penis
+    msleep(250);
+    create_drive_direct(0,0);
     //dropped already
     move(-100, 2000);
 	
