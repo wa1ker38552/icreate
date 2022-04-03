@@ -22,56 +22,64 @@ void extend(int callibration);
 int main()
 {
     create_connect();
+    printf("hello");
     enable_servos();
    	// waitforlight(); // wait for light
     alldown();
+    /* uncomment if going bottom right
  	// move to botguy head to start
     move(200,200);
-    turnleft(0);
+    turnleft(20);
     move(300,600);
     turnright(100);
 	// move to line
+    */
     move_until_black(calc_threshold());
-    move(-200,300);
-    extend(200);
-    msleep(500); // pause after retraction
-    retract(200);
-    move_until_black(calc_threshold());
- 	move(400,1500);
-    turnright(300);
-   	move(600,1500);
+
+    move(500,800);
+    turnright(200); // calibrate
+    move(500,500);
+    extend(300); msleep(500);
+    retract(300);
+    turnleft(100);
+    
+    pause();
+    forwarduntilbump(800);
+    move(-200,350);
+    turnright(200);
+   	move(600,1100);
+    
     move_until_black(calc_threshold());
     move(400,400); // if facing left
-    turnleft(150);
-    move(-200,200);
+    turnleft(200);
+    move(-100,200);
     //===========
     slow_servo(1, 2000); // open
-   	slow_servo(2, 800); // move middle up
-    slow_servo(0, 800); // move bottom forward
+   	slow_servo(2, 850); // move middle up
+    slow_servo(0, 1200); // move bottom forward
     //===========
     forwarduntilbump(50);
-    move(-100,300);
     slow_servo(1,1000);
    	move(-100,1300); // grabbed already
     
     turnright(0);
     move(250,1200);
     turnright(200);
+    msleep(1000*1);
     move_until_black(calc_threshold());
-    move(250,1000);
+    move(250,1700);
     forwarduntilbump(100);
     move(-200,500);
     
     turnleft(60);
-    move(200,1300);
-    slightturnright(100,200);
-    slow_servo(0, 100);
-    slow_servo(2, 500);
+    move(600,525);
     slightturnright(100,100);
-    slow_servo(1, 2000);
+    slow_servo(0, 100);
+    slow_servo(2, 200);
     msleep(1000);
+    
+    /*
     alldown();
-   	printf("bruh");
     turnleft(250);
     
     move_until_black(calc_threshold());
@@ -79,9 +87,9 @@ int main()
     
     turnleft(200);
     create_drive_direct(0,0);
-    move(500, 1000);
+    move(500, 800);
     
-    turnright(60);
+    turnright(80);
     forwarduntilbump(100);
     move(-100,300);
     turnleft(80);
@@ -89,6 +97,7 @@ int main()
     extend(-300);
     move(-300,1500);
     extend(200);
+    */
     
     ao();
     return 0;
