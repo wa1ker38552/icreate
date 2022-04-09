@@ -23,10 +23,9 @@ void print(char text);
 int main()
 {
     create_connect();
-    //print("hello");
     enable_servos();
-    msleep(2000);
-    waitforlight(); // wait for light
+    wait_for_light(0); // wait for light
+    shut_down_in(115);
     //alldown();
     /* uncomment if going bottom right
  	// move to botguy head to start
@@ -38,7 +37,7 @@ int main()
     */
     move_until_black(calc_threshold());
 
-    move(500,700);
+    move(500,750);
     turnright(200); // calibrate
     move(500,500);
     extend(300); msleep(500);
@@ -48,28 +47,26 @@ int main()
     pause();
     forwarduntilbump(800);
     move(-200,600);
-    turnright(260);
+    turnright(300);
     move(600,1100);
-
     move_until_black(calc_threshold());
-    move(400,400); // if facing left
+    move(400,350); // if facing left
     turnleft(200);
-    move(-100,300);
+    move(-100,400);
     //===========
-    slow_servo(1, 2000); // open
+   	// open
     slow_servo(2, 850); // move middle up
-    slow_servo(0, 1200); // move bottom forward
+    slow_servo(3, 1200); // move bottom forward
     //===========
     forwarduntilbump(50);
-	move(-100,400);
-    slow_servo(1,1000);
-    msleep(1000*15); // time to wait
+    slow_servo(1,810);
+    msleep(1000*16); // time to wait
     move(-100,1300); // grabbed already
 
     turnright(0);
-    //move(250,1200); move back immediatelly
-    turnright(200);
-    msleep(1000*1); // time distance to wait before crossing line
+    move(200,400);
+    turnright(280);
+
     move_until_black(calc_threshold());
     move(250,1700);
     forwarduntilbump(100);
@@ -77,32 +74,19 @@ int main()
 
     turnleft(60);
     move(600,525);
-    move(250,1200);
-    slightturnright(100,300);
-    slow_servo(0, 100);
-    slow_servo(2, 200);
-    msleep(1000);
-
-    /*
-    alldown();
-    turnleft(250);
-
-    move_until_black(calc_threshold());
-    move(400, 1000);
-
-    turnleft(200);
-    create_drive_direct(0,0);
-    move(500, 800);
-
-    turnright(80);
+    move(250,1100);
+    
+    turnright(100);
     forwarduntilbump(100);
-    move(-100,300);
-    turnleft(80);
-
-    extend(-300);
-    move(-300,1500);
-    extend(200);
-    */
+    move(-100,600);
+    turnleft(0);
+    
+    //slightturnright(100,200);
+    slow_servo(3, 300);
+    slow_servo(2, 200);
+    slightturnright(50,200);
+    move(100,600);
+    msleep(1000);
 
     ao();
     return 0;
@@ -121,13 +105,13 @@ void turnright(int callibration)
     pause();
 }
 void forwarduntilbump(int speed) {
-    while (1) {
-        if (get_create_lbump() == 1 || get_create_rbump() == 1) {
+	while (1) {
+    	if (get_create_lbump() == 1 || get_create_rbump() == 1) {
             break;
         }
         else {
-            create_drive_direct(speed, speed);
-        }     
+        	create_drive_direct(speed, speed);
+        }
     }
     pause();
 }
@@ -192,12 +176,22 @@ int calc_threshold() {
 }
 void waitforlight() {
     int previous = analog(0);
+    int threshold = absol(25*(previous-analog(0)));
+    previous = analog(0);
+    msleep(333);
+    threshold =+ absol(25*(previous-analog(0)));
+    previous = analog(0);
+    msleep(333);
+    threshold =+ absol(25*(previous-analog(0)));
+    threshold = threshold/3;
+    printf("%i", threshold);
     while (1) {
         msleep(500);
-        if (absol(analog(0)-previous) > 100) {
+        if ((previous-analog(0)) > threshold) {
+            printf("Previous %i Analog %i",previous,analog(0));
             break;
         }
-        int previous = analog(0);
+        previous = analog(0);
     }
 }
 int absol(int num) {
@@ -221,7 +215,7 @@ void slow_servo(int port, int maxmin) {
     }
 }
 void alldown() {
-    slow_servo(0, 1725); // move bottom back
+    slow_servo(3, 1725); // move bottom back
     msleep(1000);
     slow_servo(2, 0); // move middle down
     msleep(1000);
@@ -238,12 +232,12 @@ void slightturnright(int speed, int time) {
     create_drive_direct(0,0);
 }
 void retract(int callibration) {
-    mav(0,-1000);
+    mav(0,1000);
     msleep(500+callibration);   
     mav(0,0);
 }
 void extend(int callibration) {
-    mav(0,1000);
+    mav(0,-1000);
     msleep(500+callibration);
     mav(0,0);
 }
